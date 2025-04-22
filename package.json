@@ -1,5 +1,5 @@
 {
-  "name": "test-website",
+  "name": "arknights-wordle",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

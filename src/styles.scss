@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html {
+    color-scheme: light dark;
+    @include mat.theme((
+      color: mat.$violet-palette,
+      typography: Inter,
+      density: 0
+    ));
+  }
+
+.page-header {
+    font-size: 64px;
+    margin-bottom: 16px;
+    padding: 16px;
+    border-bottom: 2px;
+}
