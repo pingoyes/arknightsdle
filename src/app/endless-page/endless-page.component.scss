@@ -1,0 +1,19 @@
+.choice-correct {
+    color: var(--green-success);
+}
+
+.choice-incorrect {
+    color: var(--mat-sys-error);
+}
+
+.character-choice {
+    text-decoration: underline;
+}
+
+.score-text {
+    margin-bottom: 16px;
+}
+
+.score-counter {
+    text-decoration: underline;
+}

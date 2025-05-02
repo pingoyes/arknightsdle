@@ -1,0 +1,9 @@
+<div class="center-wrapper">
+    <h1>{{ pageTitle }}</h1>
+    @if (finalCharacter != '') {
+        <h2 [class.choice-correct]="character.name == finalCharacter"
+            [class.choice-incorrect]="character.name != finalCharacter">Today's character was <span class="character-choice">{{ character.name }}</span>
+        </h2>
+    }
+    <app-wordle [data]="characterData" [character]="character" (gameCompleted)="onGameCompleted($event)"></app-wordle>
+</div>

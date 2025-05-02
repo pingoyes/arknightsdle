@@ -1,9 +1,15 @@
 <main>
-  <header class="page-header">
-    Arknights Wordle
-  </header>
-  <section class="content">
-    <app-home></app-home>
-  </section>
+    <mat-toolbar class="nav-bar">
+        <div routerLink="/" class="nav-toolbar-item nav-toolbar-link" [class.selected]="currentRoute == undefined">Arknightdle</div>
+        <div routerLink="/daily" class="nav-toolbar-item nav-toolbar-link" [class.selected]="currentRoute == 'daily'">
+            Daily
+        </div>
+        <div routerLink="/endless" class="nav-toolbar-item nav-toolbar-link" [class.selected]="currentRoute == 'endless'">
+            Endless
+        </div>
+    </mat-toolbar>
+    <div class="spacer-wrapper">
+        <router-outlet></router-outlet>
+    </div>
 </main>
-<router-outlet></router-outlet>
+

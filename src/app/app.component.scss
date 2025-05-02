@@ -1,0 +1,33 @@
+.nav-bar {
+    margin: 0px;
+    padding: 0px;
+}
+
+.nav-toolbar-item {
+    font-size: var(--mat-sys-label-medium);
+    height: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.nav-toolbar-link {
+    color: var(--mat-toolbar-container-text-color) !important; 
+    text-decoration: none;
+    &:hover {
+        background: var(--mat-sys-primary-container);
+        cursor: pointer;
+    }
+    &.selected {
+        background: var(--mat-sys-primary-container);
+        pointer-events: none;
+        cursor: default;
+     }
+}
+
+.spacer-wrapper {
+    margin-left: 64px;
+    margin-right: 64px;
+}

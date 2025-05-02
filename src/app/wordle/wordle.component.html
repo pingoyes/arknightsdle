@@ -1,0 +1,59 @@
+<div class="center-wrapper">
+    @if (!gameOver) {
+        <form (ngSubmit)="onSubmit()">
+            <mat-form-field class="choice-form-field">
+                <mat-label>Enter a character's name</mat-label>
+                <input #choiceInput
+                    matInput
+                    class="choice-input"
+                    [matAutocomplete]="auto"
+                    [formControl]="choiceFormControl"
+                    (input)="filter()"
+                    (focus)="filter()"
+                    spellcheck="false">
+                <mat-autocomplete requireSelection #auto="matAutocomplete">
+                    @for (option of filteredOptions; track option) {
+                        <mat-option [value]="option">{{option}}</mat-option>
+                    }
+                </mat-autocomplete>
+                <button matSuffix mat-icon-button [disabled]="!choiceFormControl.value" (onclick)="onSubmit()"><mat-icon>arrow_forward</mat-icon></button>
+            </mat-form-field>
+        </form>
+    }
+    <table #choicesTable mat-table [dataSource]="characterChoicesData" class="choices-table">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell-name"> Name </th>
+            <td mat-cell *matCellDef="let element" [class.choices-table-cell-correct]="element.name == character.name"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="rarity">
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Rarity </th>
+            <td mat-cell *matCellDef="let element"
+                [class.choices-table-cell-incorrect]="element.rarity != character.rarity"
+                [class.choices-table-cell-correct]="element.rarity == character.rarity"> {{element.rarity}} </td>
+        </ng-container>
+        <ng-container matColumnDef="profession">
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Class </th>
+            <td mat-cell *matCellDef="let element"
+                [class.choices-table-cell-incorrect]="element.profession != character.profession"
+                [class.choices-table-cell-correct]="element.profession == character.profession"> {{element.profession}} </td>
+        </ng-container>
+        <ng-container matColumnDef="subProfessionId">
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Subclass </th>
+            <td mat-cell *matCellDef="let element"
+                [class.choices-table-cell-incorrect]="element.subProfessionId != character.subProfessionId"
+                [class.choices-table-cell-correct]="element.subProfessionId == character.subProfessionId"> {{element.subProfessionId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="groupId">
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Faction </th>
+            <td mat-cell *matCellDef="let element"
+                [class.choices-table-cell-incorrect]="!(character.groupId && (element.groupId == character.groupId)) && !(character.nationId && (element.nationId == character.nationId))"
+                [class.choices-table-cell-correct]="(character.groupId && (element.groupId == character.groupId)) || (!character.groupId && (element.nationId == character.nationId))"
+                [class.choices-table-cell-partial]="(character.groupId && (element.groupId != character.groupId)) && (character.nationId && (element.nationId == character.nationId))">
+                {{!character.groupId && (element.nationId == character.nationId) || !element.groupId ? element.nationId : element.groupId}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+    </table>
+    <div class="attempts-counter">Attempts: {{ currentAttempts }}/{{ maxAttempts }}</div>
+</div>

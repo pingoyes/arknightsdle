@@ -1,0 +1,42 @@
+.wordle-tiles {
+    min-width: 512px;
+}
+
+.choices-table {
+    margin-bottom: 16px;
+}
+
+.choice-form-field {
+    min-width: 320px;
+}
+
+.choices-table-cell-name {
+    min-width: 216px;
+}
+
+.choices-table-cell {
+    min-width: 128px;
+}
+
+.choices-table-cell-correct {
+    background-color: var(--green-success);
+    color: var(--green-on-success);
+}
+
+.choices-table-cell-incorrect {
+    background-color: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+}
+
+.choices-table-cell-partial {
+    background-color: var(--yellow-warn);
+    color: var(--yellow-on-warn);
+}
+
+.restart-button {
+    font-size: var(--mat-sys-label-medium);
+}
+
+.attempts-counter {
+    margin-bottom: 16px;
+}

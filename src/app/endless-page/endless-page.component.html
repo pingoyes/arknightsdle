@@ -1,0 +1,11 @@
+<div class="center-wrapper">
+    <h1>{{ pageTitle }}</h1>
+    <div class="score-text">Current streak: <span class="score-counter">{{ score }}</span></div>
+    @if (finalCharacter != '') {
+        <h2 [class.choice-correct]="character.name == finalCharacter"
+            [class.choice-incorrect]="character.name != finalCharacter">The character was <span class="character-choice">{{ character.name }}</span>
+        </h2>
+        <button mat-flat-button class="restart-button" (click)="updateCharacter()">{{ character.name == finalCharacter ? 'Continue' : 'Restart' }}</button>
+    }
+    <app-wordle [data]="characterData" [character]="character" (gameCompleted)="onGameCompleted($event)"></app-wordle>
+</div>
