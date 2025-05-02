@@ -8,10 +8,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Character } from '../services/character.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-wordle',
-  imports: [MatGridListModule, MatTableModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, ReactiveFormsModule, FormsModule, MatButtonModule, MatIconModule],
+  imports: [MatGridListModule, MatTableModule, MatFormFieldModule,
+    MatInputModule, MatAutocompleteModule, ReactiveFormsModule,
+    FormsModule, MatButtonModule, MatIconModule, TranslateModule],
   templateUrl: './wordle.component.html',
   styleUrl: './wordle.component.scss'
 })
@@ -37,7 +40,7 @@ export class WordleComponent {
 
   displayColumns: string[] = ['name', 'rarity', 'profession', 'subProfessionId', 'groupId'];
 
-  constructor() {}
+  constructor(public translate: TranslateService) {}
 
   ngOnChanges() {
     this.restartGame();

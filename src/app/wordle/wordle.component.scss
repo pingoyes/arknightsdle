@@ -33,6 +33,10 @@
     color: var(--yellow-on-warn);
 }
 
+.choices-table-cell-icon {
+    vertical-align: bottom;
+}
+
 .restart-button {
     font-size: var(--mat-sys-label-medium);
 }
