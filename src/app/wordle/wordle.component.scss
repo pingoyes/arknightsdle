@@ -35,6 +35,10 @@
 
 .choices-table-cell-icon {
     vertical-align: bottom;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
 }
 
 .restart-button {
@@ -43,4 +47,15 @@
 
 .attempts-counter {
     margin-bottom: 16px;
+}
+.hint-container {
+    max-width: 320px;
+    margin-bottom: 16px;
+    text-align: center;
+    .hint-text-label {
+        margin-bottom: 8px;
+    }
+    .hint-text {
+        font-style: italic;
+    }
 }

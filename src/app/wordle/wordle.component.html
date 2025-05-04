@@ -20,6 +20,25 @@
             </mat-form-field>
         </form>
     }
+    @if (!gameOver && enableHints) {
+        <div class="hint-container">
+        @if (!hintUsed) {
+            <button mat-flat-button
+                class="hint-button"
+                (click)="onHintClick()"
+                [disabled]="hintUsed"
+                matTooltip="{{ 'wordle.hint' | translate }}">
+                Hint
+            </button>
+        }
+        @if (hintUsed) {
+            <div class="hint-text-label">Hint:</div>
+            <span class="hint-text">"{{ character.itemUsage.replace(character.name, ' █')
+                .replace(character.name.toLowerCase(), ' █')
+                .replace(this.translate.instant('wordle.profession.' + character.profession), ' █') }}"</span>
+        }
+        </div>
+    }
     <table #choicesTable mat-table [dataSource]="characterChoicesData" class="choices-table">
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef class="choices-table-cell-name"> Name </th>
@@ -29,11 +48,11 @@
             <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Rarity </th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="element.rarity != character.rarity"
-                [class.choices-table-cell-correct]="element.rarity == character.rarity"> {{ 'rarity.' + element.rarity | translate }} 
-                @if ( this.translate.instant(character.rarity) > this.translate.instant(element.rarity)) {
+                [class.choices-table-cell-correct]="element.rarity == character.rarity"> {{ 'wordle.rarity.' + element.rarity | translate }} 
+                @if ( this.translate.instant('wordle.rarity.' + character.rarity) > this.translate.instant('wordle.rarity.' + element.rarity)) {
                     <mat-icon class="choices-table-cell-icon">arrow_upward</mat-icon>
                 }
-                @else if (this.translate.instant(element.rarity) > this.translate.instant(character.rarity)) {
+                @else if (this.translate.instant('wordle.rarity.' + element.rarity) > this.translate.instant('wordle.rarity.' + character.rarity)) {
                     <mat-icon class="choices-table-cell-icon">arrow_downward</mat-icon>
                 }
             </td>
@@ -42,7 +61,7 @@
             <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Class </th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="element.profession != character.profession"
-                [class.choices-table-cell-correct]="element.profession == character.profession"> {{ 'profession.' + element.profession | translate }} </td>
+                [class.choices-table-cell-correct]="element.profession == character.profession"> {{ 'wordle.profession.' + element.profession | translate }} </td>
         </ng-container>
         <ng-container matColumnDef="subProfessionId">
             <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Subclass </th>
@@ -51,12 +70,15 @@
                 [class.choices-table-cell-correct]="element.subProfessionId == character.subProfessionId"> {{element.subProfessionId}} </td>
         </ng-container>
         <ng-container matColumnDef="groupId">
-            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Faction </th>
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"
+                matTooltip="{{ 'wordle.faction.help' | translate }}"
+                matTooltipClass="wordle-choices-table-faction-tooltip"
+                [matTooltipPosition]="'above'"> Faction <mat-icon matSuffix class="choices-table-cell-icon">info</mat-icon></th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="!(character.groupId && (element.groupId == character.groupId)) && !(character.nationId && (element.nationId == character.nationId))"
                 [class.choices-table-cell-correct]="(character.groupId && (element.groupId == character.groupId)) || (!character.groupId && (element.nationId == character.nationId))"
                 [class.choices-table-cell-partial]="(character.groupId && (element.groupId != character.groupId)) && (character.nationId && (element.nationId == character.nationId))">
-                {{!character.groupId && (element.nationId == character.nationId) || !element.groupId ? element.nationId : element.groupId}}
+                {{(!character.groupId && (element.nationId == character.nationId) || !element.groupId ? element.nationId : element.groupId) | titlecase }}
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>

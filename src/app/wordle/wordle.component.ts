@@ -3,25 +3,29 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Character } from '../services/character.service';
+import { Character, CharacterService } from '../services/character.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-wordle',
   imports: [MatGridListModule, MatTableModule, MatFormFieldModule,
     MatInputModule, MatAutocompleteModule, ReactiveFormsModule,
-    FormsModule, MatButtonModule, MatIconModule, TranslateModule],
+    FormsModule, MatButtonModule, MatIconModule, 
+    MatTooltipModule, TranslateModule, TitleCasePipe],
   templateUrl: './wordle.component.html',
   styleUrl: './wordle.component.scss'
 })
 export class WordleComponent {
   @Input() data: Map<string, Character> = new Map<string, Character>();
-  @Input() character: Character = {name: '', rarity: '', profession: '', subProfessionId: '', nationId: '', groupId: ''};
-  @Input() maxAttempts: number = Object.keys(this.character).length+1;
+  @Input() character: Character = this.characterService.getEmptyCharacter();
+  @Input() maxAttempts: number = 7;
+  @Input() enableHints: boolean = true;
 
   @Output() gameCompleted = new EventEmitter<string>();
 
@@ -34,13 +38,16 @@ export class WordleComponent {
   possibleChoicesArray!: string[];
   filteredOptions!: string[];
 
+  hintUsed: boolean = false;
+
   @ViewChild('choiceInput') choiceInput!: ElementRef<HTMLInputElement>;
   @ViewChild('choicesTable') choicesTable!: MatTable<Character>;
+  @ViewChild('choiceInput', { read: MatAutocompleteTrigger }) choiceAutocomplete!: MatAutocompleteTrigger;
   choiceFormControl = new FormControl('');
 
   displayColumns: string[] = ['name', 'rarity', 'profession', 'subProfessionId', 'groupId'];
 
-  constructor(public translate: TranslateService) {}
+  constructor(public translate: TranslateService, private characterService: CharacterService) {}
 
   ngOnChanges() {
     this.restartGame();
@@ -53,6 +60,7 @@ export class WordleComponent {
     this.characterChoices.clear();
     this.possibleChoices = new Set<string>(this.data.keys());
     this.possibleChoicesArray = Array.from(this.possibleChoices);
+    this.hintUsed = false;
   }
 
   onSubmit() {
@@ -69,12 +77,17 @@ export class WordleComponent {
       this.possibleChoicesArray = Array.from(this.possibleChoices);
       this.choicesTable.renderRows();
 
-      
       //console.log(this.data.get(value));
       this.choiceFormControl.reset();
+      this.choiceInput.nativeElement.blur();
       this.choiceInput.nativeElement.value = '';
       this.filter();
+      this.choiceAutocomplete.closePanel();
     }
+  }
+
+  onHintClick() : void {
+    this.hintUsed = true;
   }
 
   filter(): void {

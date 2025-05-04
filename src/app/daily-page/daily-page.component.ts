@@ -2,16 +2,17 @@ import { Component } from '@angular/core';
 import { WordleComponent } from '../wordle/wordle.component';
 import { MatButtonModule } from '@angular/material/button';
 import { Character, CharacterService } from '../services/character.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-daily-page',
-  imports: [WordleComponent, MatButtonModule],
+  imports: [WordleComponent, MatButtonModule, TranslateModule],
   templateUrl: './daily-page.component.html',
   styleUrl: './daily-page.component.scss'
 })
 export class DailyPageComponent {
   pageTitle: string = 'Daily';
-  character: Character = {name: '', rarity: '', profession: '', subProfessionId: '', nationId: '', groupId: ''};
+  character: Character = this.characterService.getEmptyCharacter();
   characterData: Map<string, Character> = new Map<string, Character>();
 
   finalCharacter: string = '';
@@ -20,20 +21,9 @@ export class DailyPageComponent {
   
   ngOnInit() {
     this.characterService.getCharacters().subscribe(data => {
-      Object.keys(data).forEach(key => {
-        if (data[key] && (data[key].nationId || data[key].groupId || data[key].teamId)) {
-          this.characterData.set(data[key].name, {
-            name: data[key].name,
-            rarity: data[key].rarity,
-            profession: data[key].profession,
-            subProfessionId: data[key].subProfessionId,
-            nationId: data[key].nationId,
-            groupId: (data[key].teamId && !data[key].groupId && !data[key].nationId) ? data[key].teamId : data[key].groupId,
-          });
-        } 
-      });
+      this.characterData = data;
       this.updateCharacter();
-    })
+    });
   }
 
   updateCharacter() : void {

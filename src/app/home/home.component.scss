@@ -1,0 +1,8 @@
+.gamemode-select-card {
+    min-width: 100%;
+    margin-bottom: 16px;
+    &:hover {
+        background: var(--mat-sys-primary-container);
+        cursor: pointer;
+    }
+}
