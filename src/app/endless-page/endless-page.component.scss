@@ -10,7 +10,7 @@
     text-decoration: underline;
 }
 
-.score-text {
+.score-container {
     margin-bottom: 16px;
     border-top: solid 1px;
     padding-top: 16px;
@@ -18,8 +18,20 @@
 
 .score-counter {
     text-decoration: underline;
+    font-weight: bold;
+    font-size: 24px;
+    vertical-align: middle;
 }
 
 .restart-button {
     margin-bottom: 16px;
+    box-shadow: 0px 0px 4px -1px var(--mat-sys-shadow);
+    // background-color: var(--mat-sys-primary) !important;
+    // color: var(--mat-sys-on-primary) !important;
+}
+
+.divider {
+    border: 1px solid;
+    margin-left: 16px;
+    margin-right: 16px;
 }

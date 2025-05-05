@@ -17,6 +17,11 @@ export class DailyPageComponent {
 
   finalCharacter: string = '';
 
+  currentAttempts: number = 0;
+  gameOver: boolean = true;
+  characterChoices: string[] = [];
+  saveProgress: boolean = true;
+
   constructor(private characterService: CharacterService) {}
   
   ngOnInit() {
@@ -31,23 +36,39 @@ export class DailyPageComponent {
     let randomChar = this.character;
 
     while (randomChar == this.character) {
-      randomChar = this.selectRandomChar(Array.from(this.characterData.values()));
+      randomChar = this.selectRandomDailyChar(Array.from(this.characterData.values()), this.characterData.size);
     }
     this.character = randomChar ? randomChar : this.character;
   }
 
-  selectRandomChar(chars: Character[]) : Character {
-    const randomChar = chars[this.randomIntByDate(this.characterData.size)];
+  selectRandomDailyChar(chars: Character[], range: number) : Character {
+    let randInt: number;
+
+    const date = new Date();
+    const today = date.getFullYear().toString() + date.getMonth() + date.getDate();
+    const savedDate = localStorage.getItem("date") as string;
+
+    if (!savedDate || savedDate != today || !localStorage.getItem("dailyChar")) {
+      localStorage.setItem("date", today);
+      randInt = Math.floor(Math.random()*range);
+      localStorage.setItem("dailyChar", randInt.toString());
+      this.gameOver = false;
+    } else {
+      randInt = parseInt(localStorage.getItem("dailyChar") as string);
+      
+      this.gameOver = localStorage.getItem("dailyGameOver") == 'true' ? true : false;
+      const savedChoicesStr = localStorage.getItem('dailyCharacterChoices') as string;
+      this.characterChoices = savedChoicesStr ? JSON.parse(savedChoicesStr) : new Set<string>();
+      this.currentAttempts = this.characterChoices.length;
+      if (this.gameOver) {
+        this.onGameCompleted(this.characterChoices[this.characterChoices.length-1]);
+      }
+    }
+
+    const randomChar = chars[randInt];
     console.log(randomChar);
 
     return randomChar;
-  }
-
-  // TODO: Add seeding lib
-  randomIntByDate(range: number) : number {
-    const date = new Date();
-    const randomSeed = parseInt(date.getFullYear() + "" + date.getMonth() +  date.getDay());
-    return Math.floor(Math.random()*range);
   }
 
   onGameCompleted(value: string) {

@@ -1,14 +1,30 @@
 @use '@angular/material' as mat;
 @use './dark-theme-colors.scss' as dark-theme;
+@use './blue-theme-colors.scss' as light-theme;
 
 html {
   color-scheme: light dark;
-  @include mat.theme((
-    color: (
-      primary: dark-theme.$primary-palette,
-      tertiary: dark-theme.$tertiary-palette,
-    ),
-    typography: Roboto,
-    density: 0
-  ));
+  background-color: var(--mat-sys-background);
+  @media (prefers-color-scheme: dark) {
+    @include mat.theme((
+      color: (
+        primary: dark-theme.$primary-palette,
+        tertiary: dark-theme.$tertiary-palette,
+        theme-type: dark,
+      ),
+      typography: Roboto,
+      density: 0
+    ));
+  }
+  @media (prefers-color-scheme: light) {
+    @include mat.theme((
+      color: (
+        primary: light-theme.$primary-palette,
+        tertiary: dark-theme.$tertiary-palette,
+        theme-type: light,
+      ),
+      typography: Roboto,
+      density: 0
+    ));
+  }
 }

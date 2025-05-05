@@ -16,6 +16,7 @@ export class EndlessPageComponent {
 
   finalCharacter: string = '';
   score: number = 0;
+  maxScore: number = parseInt(localStorage.getItem("maxScore") as string) | 0;
 
   constructor(private characterService: CharacterService) {}
   
@@ -34,29 +35,27 @@ export class EndlessPageComponent {
     let randomChar = this.character;
 
     while (randomChar == this.character) {
-      randomChar = this.selectRandomChar(Array.from(this.characterData.values()));
+      randomChar = this.selectRandomChar(Array.from(this.characterData.values()), this.characterData.size);
     }
     this.character = randomChar ? randomChar : this.character;
   }
 
-  selectRandomChar(chars: Character[]) : Character {
-    const randomChar = chars[this.randomIntByDate(this.characterData.size)];
+  selectRandomChar(chars: Character[], range: number) : Character {
+    const randomChar = chars[Math.floor(Math.random()*range)];
     console.log(randomChar);
 
     return randomChar;
-  }
-
-  // TODO: Add seeding lib
-  randomIntByDate(range: number) : number {
-    const date = new Date();
-    const randomSeed = parseInt(date.getFullYear() + "" + date.getMonth() +  date.getDay());
-    return Math.floor(Math.random()*range);
   }
 
   onGameCompleted(value: string) : void {
     this.finalCharacter = value;
     if (this.finalCharacter == this.character.name) {
       this.score += 1;
+      const savedScore = parseInt(localStorage.getItem("maxScore") as string);
+      if (!savedScore || this.score > savedScore) {
+        localStorage.setItem("maxScore", this.score.toString());
+        this.maxScore = this.score;
+      }
     }
   }
 }

@@ -4,6 +4,10 @@
 
 .choices-table {
     margin-bottom: 16px;
+    background-color: var(--mat-sys-surface-container-low);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0px 0px 4px -1px rgba(0,0,0,0.5);
 }
 
 .choice-form-field {
@@ -52,6 +56,11 @@
     max-width: 320px;
     margin-bottom: 16px;
     text-align: center;
+    .hint-button {
+        // background-color: var(--mat-sys-primary);
+        // color: var(--mat-sys-on-primary);
+        box-shadow: 0px 0px 4px -1px var(--mat-sys-shadow);
+    }
     .hint-text-label {
         margin-bottom: 8px;
     }

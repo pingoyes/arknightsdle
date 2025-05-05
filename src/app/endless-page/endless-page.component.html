@@ -7,6 +7,13 @@
         </h2>
         <button mat-flat-button class="restart-button" (click)="updateCharacter()">{{ character.name == finalCharacter ? 'Continue' : 'Restart' }}</button>
     }
-    <app-wordle [data]="characterData" [character]="character" (gameCompleted)="onGameCompleted($event)"></app-wordle>
-    <div class="score-text">Current streak: <span class="score-counter">{{ score }}</span></div>
+    <app-wordle
+        [data]="characterData"
+        [character]="character"
+        (gameCompleted)="onGameCompleted($event)"></app-wordle>
+    <div class="score-container">
+        <span>Current streak: <span class="score-counter">{{ score }}</span></span>
+        <span class="divider"></span>
+        <span>Highest streak: <span class="score-counter">{{ maxScore }}</span></span>
+    </div>
 </div>

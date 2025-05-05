@@ -29,11 +29,12 @@ export class WordleComponent {
 
   @Output() gameCompleted = new EventEmitter<string>();
 
-  currentAttempts: number = 0;
-  gameOver: boolean = false;
-
+  @Input() currentAttempts: number = 0;
+  @Input() gameOver: boolean = true;
+  @Input() characterChoices: string[] = [];
+  @Input() saveProgress: boolean = false;
+  
   characterChoicesData: Character[] = [];
-  characterChoices: Set<string> = new Set<string>();
   possibleChoices!: Set<string>;
   possibleChoicesArray!: string[];
   filteredOptions!: string[];
@@ -54,28 +55,44 @@ export class WordleComponent {
   }
 
   restartGame() {
-    this.currentAttempts = 0;
-    this.gameOver = false;
-    this.characterChoicesData = [];
-    this.characterChoices.clear();
     this.possibleChoices = new Set<string>(this.data.keys());
-    this.possibleChoicesArray = Array.from(this.possibleChoices);
-    this.hintUsed = false;
+    if (this.saveProgress && this.characterChoices.length > 0) {
+      this.characterChoices.forEach(value => {
+        this.characterChoicesData.push(this.data.get(value)!);
+        this.possibleChoices.delete(value);
+        this.possibleChoicesArray = Array.from(this.possibleChoices);
+      })
+      this.choicesTable?.renderRows();
+    } else {
+      if (this.saveProgress == false) {
+        this.gameOver = false;
+      }
+      this.currentAttempts = 0;
+      this.characterChoicesData = [];
+      this.characterChoices = [];
+      this.possibleChoicesArray = Array.from(this.possibleChoices);
+      this.hintUsed = false;
+    }
   }
 
   onSubmit() {
     const value = this.choiceFormControl.value;
-    if (value && !this.characterChoices.has(value.toLowerCase())) {
+    if (value && !this.characterChoices.includes(value)) {
       this.currentAttempts += 1;
       if (value == this.character.name || this.currentAttempts == this.maxAttempts) {
         this.gameOver = true;
         this.gameCompleted.emit(value);
       }
       this.characterChoicesData.push(this.data.get(value)!);
-      this.characterChoices.add(value.toLowerCase());
+      this.characterChoices.push(value);
       this.possibleChoices.delete(value);
       this.possibleChoicesArray = Array.from(this.possibleChoices);
       this.choicesTable.renderRows();
+
+      if (this.saveProgress) {
+        localStorage.setItem("dailyGameOver", (this.gameOver == false ? 'false' : 'true'));
+        localStorage.setItem('dailyCharacterChoices', JSON.stringify(Array.from(this.characterChoices)));
+      }
 
       //console.log(this.data.get(value));
       this.choiceFormControl.reset();
