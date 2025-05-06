@@ -1,0 +1,40 @@
+{
+  "wordle": {
+    "rarity": {
+      "TIER_1": "1 ★",
+      "TIER_2": "2 ★",
+      "TIER_3": "3 ★",
+      "TIER_4": "4 ★",
+      "TIER_5": "5 ★",
+      "TIER_6": "6 ★"
+    },
+    "profession": {
+      "MEDIC": "Medic",
+      "WARRIOR": "Guard",
+      "SPECIAL": "Specialist",
+      "SNIPER": "Sniper",
+      "TANK": "Defender",
+      "CASTER": "Caster",
+      "SUPPORT": "Supporter",
+      "PIONEER": "Vanguard"
+    },
+    "faction": {
+      "help": "Green: Faction ✓\n Yellow: Faction X | Nation ✓ \n Red: Faction X | Nation X ",
+      "nation": {
+
+      }
+    },
+    "hint": "Reveal a description of the character."
+  },
+  "home": {
+    "title": "Available Gamemodes"
+  },
+  "daily": {
+    "title": "Daily",
+    "description": "Attempt today's Arknightsdle"
+  },
+  "endless": {
+    "title": "Endless",
+    "description": "Go as far as you can in the endless Arknightsdle"
+  }
+}
