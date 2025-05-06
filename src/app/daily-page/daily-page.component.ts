@@ -5,6 +5,7 @@ import { Character, CharacterService } from '../services/character.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { sfc32, cyrb128 } from '../utils/seed-random-util';
 
 @Component({
   selector: 'app-daily-page',
@@ -43,20 +44,19 @@ export class DailyPageComponent {
   }
 
   selectRandomDailyChar(chars: Character[], range: number) : Character {
-    let randInt: number;
-
     const date = new Date();
     const today = date.getFullYear().toString() + date.getMonth() + date.getDate();
+    const seed = cyrb128(today);
+    const rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
+    const randomChar = chars[Math.round(rand()*range)];
     const savedDate = localStorage.getItem("date") as string;
 
-    if (!savedDate || savedDate != today || !localStorage.getItem("dailyChar")) {
+    if (savedDate != today) {
       localStorage.setItem("date", today);
-      randInt = Math.floor(Math.random()*range);
-      localStorage.setItem("dailyChar", randInt.toString());
+      localStorage.setItem("dailyGameOver", 'false');
+      localStorage.setItem('dailyCharacterChoices', JSON.stringify([]));
       this.gameOver = false;
     } else {
-      randInt = parseInt(localStorage.getItem("dailyChar") as string);
-      
       this.gameOver = localStorage.getItem("dailyGameOver") == 'true' ? true : false;
       const savedChoicesStr = localStorage.getItem('dailyCharacterChoices') as string;
       this.characterChoices = savedChoicesStr ? JSON.parse(savedChoicesStr) : new Set<string>();
@@ -66,7 +66,6 @@ export class DailyPageComponent {
       }
     }
 
-    const randomChar = chars[randInt];
     console.log(randomChar);
 
     return randomChar;
