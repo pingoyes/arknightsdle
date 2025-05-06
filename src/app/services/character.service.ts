@@ -16,7 +16,7 @@ export interface Character {
   providedIn: 'root'
 })
 export class CharacterService {
-  readonly path: string = '/assets/data/character_table.json';
+  readonly path: string = './assets/data/character_table.json';
   constructor(private httpClient: HttpClient) {}
 
   getCharacters() : Observable<Map<string, Character>> {
