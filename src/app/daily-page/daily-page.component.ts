@@ -38,26 +38,29 @@ export class DailyPageComponent {
     let randomChar = this.character;
 
     while (randomChar == this.character) {
-      randomChar = this.selectRandomDailyChar(Array.from(data.values()), data.size);
+      randomChar = this.selectRandomDailyChar(data, data.size);
     }
     this.character = randomChar ? randomChar : this.character;
   }
 
-  selectRandomDailyChar(chars: Character[], range: number) : Character {
+  selectRandomDailyChar(data: Map<string, Character>, range: number) : Character {
     const date = new Date();
     const today = date.getFullYear().toString() + date.getMonth() + date.getDate();
     const seed = cyrb128(today);
     const rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
-    const randomChar = chars[Math.round(rand()*range)];
+    let randomChar = Array.from(data.values())[Math.round(rand()*range)];
     const savedDate = localStorage.getItem("date") as string;
 
     if (savedDate != today) {
-      localStorage.setItem("date", today);
-      localStorage.setItem("dailyGameOver", 'false');
+      localStorage.setItem('date', today);
+      localStorage.setItem('dailyGameOver', 'false');
       localStorage.setItem('dailyCharacterChoices', JSON.stringify([]));
+      localStorage.setItem('dailyChar', randomChar.name);
       this.gameOver = false;
     } else {
-      this.gameOver = localStorage.getItem("dailyGameOver") == 'true' ? true : false;
+      const savedChar = data.get(localStorage.getItem('dailyChar') as string);
+      if (savedChar) randomChar = savedChar;
+      this.gameOver = localStorage.getItem('dailyGameOver') == 'true' ? true : false;
       const savedChoicesStr = localStorage.getItem('dailyCharacterChoices') as string;
       this.characterChoices = savedChoicesStr ? JSON.parse(savedChoicesStr) : new Set<string>();
       this.currentAttempts = this.characterChoices.length;

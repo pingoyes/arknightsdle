@@ -1,6 +1,7 @@
 # Arknightsdle
 
 https://pingoyes.github.io/arknightsdle/
+Data from https://github.com/Kengxxiao/ArknightsGameData_YoStar/blob/main/en_US/gamedata/excel/character_table.json
 
 ## Development server
 
