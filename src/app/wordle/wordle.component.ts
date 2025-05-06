@@ -13,103 +13,103 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-wordle',
-  imports: [MatGridListModule, MatTableModule, MatFormFieldModule,
-    MatInputModule, MatAutocompleteModule, ReactiveFormsModule,
-    FormsModule, MatButtonModule, MatIconModule, 
-    MatTooltipModule, TranslateModule, TitleCasePipe],
-  templateUrl: './wordle.component.html',
-  styleUrl: './wordle.component.scss'
+    selector: 'app-wordle',
+    imports: [MatGridListModule, MatTableModule, MatFormFieldModule,
+        MatInputModule, MatAutocompleteModule, ReactiveFormsModule,
+        FormsModule, MatButtonModule, MatIconModule, 
+        MatTooltipModule, TranslateModule, TitleCasePipe],
+    templateUrl: './wordle.component.html',
+    styleUrl: './wordle.component.scss'
 })
 export class WordleComponent {
-  @Input() data: Map<string, Character> | null = new Map<string, Character>();
-  @Input() character: Character = this.characterService.getEmptyCharacter();
-  @Input() maxAttempts: number = 7;
-  @Input() enableHints: boolean = true;
+    @Input() data: Map<string, Character> | null = new Map<string, Character>();
+    @Input() character: Character = this.characterService.getEmptyCharacter();
+    @Input() maxAttempts: number = 7;
+    @Input() enableHints: boolean = true;
 
-  @Output() gameCompleted = new EventEmitter<string>();
+    @Output() gameCompleted = new EventEmitter<string>();
 
-  @Input() currentAttempts: number = 0;
-  @Input() gameOver: boolean = false;
-  @Input() characterChoices: string[] = [];
-  @Input() saveProgress: boolean = false;
-  
-  characterChoicesData: Character[] = [];
-  possibleChoices!: Set<string>;
-  possibleChoicesArray!: string[];
-  filteredOptions!: string[];
+    @Input() currentAttempts: number = 0;
+    @Input() gameOver: boolean = false;
+    @Input() characterChoices: string[] = [];
+    @Input() saveProgress: boolean = false;
+    
+    characterChoicesData: Character[] = [];
+    possibleChoices!: Set<string>;
+    possibleChoicesArray!: string[];
+    filteredOptions!: string[];
 
-  hintUsed: boolean = false;
+    hintUsed: boolean = false;
 
-  @ViewChild('choiceInput') choiceInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('choicesTable') choicesTable!: MatTable<Character>;
-  @ViewChild('choiceInput', { read: MatAutocompleteTrigger }) choiceAutocomplete!: MatAutocompleteTrigger;
-  choiceFormControl = new FormControl('');
+    @ViewChild('choiceInput') choiceInput!: ElementRef<HTMLInputElement>;
+    @ViewChild('choicesTable') choicesTable!: MatTable<Character>;
+    @ViewChild('choiceInput', { read: MatAutocompleteTrigger }) choiceAutocomplete!: MatAutocompleteTrigger;
+    choiceFormControl = new FormControl('');
 
-  displayColumns: string[] = ['name', 'rarity', 'profession', 'subProfessionId', 'groupId'];
+    displayColumns: string[] = ['name', 'rarity', 'profession', 'subProfessionId', 'groupId'];
 
-  constructor(public translate: TranslateService, private characterService: CharacterService) {}
+    constructor(public translate: TranslateService, private characterService: CharacterService) {}
 
-  ngOnChanges() {
-    this.restartGame();
-  }
-
-  restartGame() {
-    if (this.data) {
-      this.possibleChoices = new Set<string>(this.data.keys());
-      if (this.saveProgress && this.characterChoices.length > 0) {
-        this.characterChoices.forEach(value => {
-          this.characterChoicesData.push(this.data?.get(value)!);
-          this.possibleChoices.delete(value);
-          this.possibleChoicesArray = Array.from(this.possibleChoices);
-        })
-        this.choicesTable?.renderRows();
-      } else {
-        this.gameOver = false;
-        this.currentAttempts = 0;
-        this.characterChoicesData = [];
-        this.characterChoices = [];
-        this.possibleChoicesArray = Array.from(this.possibleChoices);
-        this.hintUsed = false;
-      }
+    ngOnChanges() {
+        this.restartGame();
     }
-  }
 
-  onSubmit() {
-    const value = this.choiceFormControl.value;
-    if (value && !this.characterChoices.includes(value)) {
-      this.currentAttempts += 1;
-      if (value == this.character.name || this.currentAttempts == this.maxAttempts) {
-        this.gameOver = true;
-        this.gameCompleted.emit(value);
-      }
-      this.characterChoicesData.push(this.data?.get(value)!);
-      this.characterChoices.push(value);
-      this.possibleChoices.delete(value);
-      this.possibleChoicesArray = Array.from(this.possibleChoices);
-      this.choicesTable.renderRows();
-
-      if (this.saveProgress) {
-        localStorage.setItem("dailyGameOver", (this.gameOver == false ? 'false' : 'true'));
-        localStorage.setItem('dailyCharacterChoices', JSON.stringify(Array.from(this.characterChoices)));
-      }
-
-      //console.log(this.data.get(value));
-      this.choiceFormControl.reset();
-      this.choiceInput.nativeElement.blur();
-      this.choiceInput.nativeElement.value = '';
-      this.filter();
-      this.choiceAutocomplete.closePanel();
+    restartGame() {
+        if (this.data) {
+            this.possibleChoices = new Set<string>(this.data.keys());
+            if (this.saveProgress && this.characterChoices.length > 0) {
+                this.characterChoices.forEach(value => {
+                    this.characterChoicesData.push(this.data?.get(value)!);
+                    this.possibleChoices.delete(value);
+                    this.possibleChoicesArray = Array.from(this.possibleChoices);
+                })
+                this.choicesTable?.renderRows();
+            } else {
+                this.gameOver = false;
+                this.currentAttempts = 0;
+                this.characterChoicesData = [];
+                this.characterChoices = [];
+                this.possibleChoicesArray = Array.from(this.possibleChoices);
+                this.hintUsed = false;
+            }
+        }
     }
-  }
 
-  onHintClick() : void {
-    this.hintUsed = true;
-  }
+    onSubmit() {
+        const value = this.choiceFormControl.value;
+        if (value && !this.characterChoices.includes(value)) {
+            this.currentAttempts += 1;
+            if (value == this.character.name || this.currentAttempts == this.maxAttempts) {
+                this.gameOver = true;
+                this.gameCompleted.emit(value);
+            }
+            this.characterChoicesData.push(this.data?.get(value)!);
+            this.characterChoices.push(value);
+            this.possibleChoices.delete(value);
+            this.possibleChoicesArray = Array.from(this.possibleChoices);
+            this.choicesTable.renderRows();
 
-  filter(): void {
-    const filterValue = this.choiceInput.nativeElement.value.toLowerCase();
+            if (this.saveProgress) {
+                localStorage.setItem("dailyGameOver", (this.gameOver == false ? 'false' : 'true'));
+                localStorage.setItem('dailyCharacterChoices', JSON.stringify(Array.from(this.characterChoices)));
+            }
 
-    this.filteredOptions = this.possibleChoicesArray.filter(option => option.toLowerCase().includes(filterValue));
-  }
+            //console.log(this.data.get(value));
+            this.choiceFormControl.reset();
+            this.choiceInput.nativeElement.blur();
+            this.choiceInput.nativeElement.value = '';
+            this.filter();
+            this.choiceAutocomplete.closePanel();
+        }
+    }
+
+    onHintClick() : void {
+        this.hintUsed = true;
+    }
+
+    filter(): void {
+        const filterValue = this.choiceInput.nativeElement.value.toLowerCase();
+
+        this.filteredOptions = this.possibleChoicesArray.filter(option => option.toLowerCase().includes(filterValue));
+    }
 }

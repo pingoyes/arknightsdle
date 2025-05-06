@@ -10,18 +10,18 @@ import { TranslateService } from '@ngx-translate/core';
     styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  currentRoute?: string;
-  constructor(private router: Router, private route: ActivatedRoute, translate: TranslateService) {
-    translate.addLangs(['en']);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+    currentRoute?: string;
+    constructor(private router: Router, private route: ActivatedRoute, translate: TranslateService) {
+        translate.addLangs(['en']);
+        translate.setDefaultLang('en');
+        translate.use('en');
+    }
 
-  ngOnInit() {
-    this.router.events.subscribe(e => {
-      if (e instanceof NavigationEnd) {
-        this.currentRoute = this.route.root.firstChild?.snapshot.url[0]?.path;
-      }
-    });
-  }
+    ngOnInit() {
+        this.router.events.subscribe(e => {
+            if (e instanceof NavigationEnd) {
+                this.currentRoute = this.route.root.firstChild?.snapshot.url[0]?.path;
+            }
+        });
+    }
 }

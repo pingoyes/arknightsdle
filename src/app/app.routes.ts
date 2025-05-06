@@ -6,7 +6,7 @@ import { EndlessPageComponent } from './endless-page/endless-page.component';
 const BASE_TITLE = 'Arknightsdle';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent, title: BASE_TITLE },
-    { path: 'daily', component: DailyPageComponent, title: 'Daily - ' + BASE_TITLE },
-    { path: 'endless', component: EndlessPageComponent, title: 'Endless - ' + BASE_TITLE }
+	{ path: '', component: HomeComponent, title: BASE_TITLE },
+	{ path: 'daily', component: DailyPageComponent, title: 'Daily - ' + BASE_TITLE },
+	{ path: 'endless', component: EndlessPageComponent, title: 'Endless - ' + BASE_TITLE }
 ];
