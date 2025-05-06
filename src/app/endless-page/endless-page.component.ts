@@ -3,16 +3,18 @@ import { WordleComponent } from '../wordle/wordle.component';
 import { MatButtonModule } from '@angular/material/button';
 import { Character, CharacterService } from '../services/character.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { map, Observable, shareReplay } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-endless-page',
-  imports: [WordleComponent, MatButtonModule, TranslateModule],
+  imports: [WordleComponent, MatButtonModule, TranslateModule, AsyncPipe],
   templateUrl: './endless-page.component.html',
   styleUrl: './endless-page.component.scss'
 })
 export class EndlessPageComponent {
   character: Character = this.characterService.getEmptyCharacter();
-  characterData: Map<string, Character> = new Map<string, Character>();
+  characterData$!: Observable<Map<string, Character>>;
 
   finalCharacter: string = '';
   score: number = 0;
@@ -21,13 +23,13 @@ export class EndlessPageComponent {
   constructor(private characterService: CharacterService) {}
   
   ngOnInit() {
-    this.characterService.getCharacters().subscribe(data => {
-      this.characterData = data;
-      this.updateCharacter();
-    });
+    this.characterData$ = this.characterService.getCharacters().pipe(map(data => {
+      this.updateCharacter(data);
+      return data;
+    }), shareReplay(1));  
   }
 
-  updateCharacter() : void {
+  updateCharacter(data: Map<string, Character>) : void {
     if (this.finalCharacter != this.character.name) {
       this.score = 0;
     }
@@ -35,7 +37,7 @@ export class EndlessPageComponent {
     let randomChar = this.character;
 
     while (randomChar == this.character) {
-      randomChar = this.selectRandomChar(Array.from(this.characterData.values()), this.characterData.size);
+      randomChar = this.selectRandomChar(Array.from(data.values()), data.size);
     }
     this.character = randomChar ? randomChar : this.character;
   }

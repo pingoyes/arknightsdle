@@ -1,13 +1,17 @@
 <div class="center-wrapper">
-    <h1>{{ 'daily.title' | translate }}</h1>
-    <div class="character-text-container">
-        @if (finalCharacter != '') {
-            <h2 [class.choice-correct]="character.name == finalCharacter"
-                [class.choice-incorrect]="character.name != finalCharacter">Today's character was <span class="character-choice">{{ character.name }}</span>
-            </h2>
-        }
+    <div class="page-header-container">
+        <h1 class="page-header">{{ 'daily.title' | translate }}</h1>
     </div>
-    <app-wordle [data]="characterData"
+    
+        @if (finalCharacter != '') {
+            <div class="character-choice-container">
+                <span [class.choice-correct]="character.name == finalCharacter"
+                    [class.choice-incorrect]="character.name != finalCharacter">Today's character was <span class="character-choice">{{ character.name }}</span>
+                </span>
+            </div>
+        }
+   
+    <app-wordle [data]="characterData$ | async"
     [character]="character"
     [enableHints]="false"
     [currentAttempts]="currentAttempts"

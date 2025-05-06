@@ -7,6 +7,9 @@
 
     --yellow-warn: #EED202;
     --yellow-on-warn: #574d00;
+
+    --blue-button: #006493;
+    --blue-button-hover: #14709B;
 }
 
 html {
@@ -53,6 +56,13 @@ body {
 
 h1, h2, h3, h4 {
     font-weight: normal;
+}
+
+.page-header-container {
+    min-width: 320px;
+    text-align: center;
+    border-bottom: solid 1px;
+    margin-bottom: 16px;
 }
 
 .wordle-choices-table-faction-tooltip {

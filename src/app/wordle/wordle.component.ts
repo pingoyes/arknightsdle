@@ -22,7 +22,7 @@ import { TitleCasePipe } from '@angular/common';
   styleUrl: './wordle.component.scss'
 })
 export class WordleComponent {
-  @Input() data: Map<string, Character> = new Map<string, Character>();
+  @Input() data: Map<string, Character> | null = new Map<string, Character>();
   @Input() character: Character = this.characterService.getEmptyCharacter();
   @Input() maxAttempts: number = 7;
   @Input() enableHints: boolean = true;
@@ -30,7 +30,7 @@ export class WordleComponent {
   @Output() gameCompleted = new EventEmitter<string>();
 
   @Input() currentAttempts: number = 0;
-  @Input() gameOver: boolean = true;
+  @Input() gameOver: boolean = false;
   @Input() characterChoices: string[] = [];
   @Input() saveProgress: boolean = false;
   
@@ -55,23 +55,23 @@ export class WordleComponent {
   }
 
   restartGame() {
-    this.possibleChoices = new Set<string>(this.data.keys());
-    if (this.saveProgress && this.characterChoices.length > 0) {
-      this.characterChoices.forEach(value => {
-        this.characterChoicesData.push(this.data.get(value)!);
-        this.possibleChoices.delete(value);
-        this.possibleChoicesArray = Array.from(this.possibleChoices);
-      })
-      this.choicesTable?.renderRows();
-    } else {
-      if (this.saveProgress == false) {
+    if (this.data) {
+      this.possibleChoices = new Set<string>(this.data.keys());
+      if (this.saveProgress && this.characterChoices.length > 0) {
+        this.characterChoices.forEach(value => {
+          this.characterChoicesData.push(this.data?.get(value)!);
+          this.possibleChoices.delete(value);
+          this.possibleChoicesArray = Array.from(this.possibleChoices);
+        })
+        this.choicesTable?.renderRows();
+      } else {
         this.gameOver = false;
+        this.currentAttempts = 0;
+        this.characterChoicesData = [];
+        this.characterChoices = [];
+        this.possibleChoicesArray = Array.from(this.possibleChoices);
+        this.hintUsed = false;
       }
-      this.currentAttempts = 0;
-      this.characterChoicesData = [];
-      this.characterChoices = [];
-      this.possibleChoicesArray = Array.from(this.possibleChoices);
-      this.hintUsed = false;
     }
   }
 
@@ -83,7 +83,7 @@ export class WordleComponent {
         this.gameOver = true;
         this.gameCompleted.emit(value);
       }
-      this.characterChoicesData.push(this.data.get(value)!);
+      this.characterChoicesData.push(this.data?.get(value)!);
       this.characterChoices.push(value);
       this.possibleChoices.delete(value);
       this.possibleChoicesArray = Array.from(this.possibleChoices);

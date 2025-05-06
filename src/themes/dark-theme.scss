@@ -15,6 +15,13 @@ html {
       typography: Roboto,
       density: 0
     ));
+    @include mat.button-overrides((
+      filled-container-color: #006493,
+      filled-label-text-color: #ffffff,
+    ));
+    .mat-mdc-unelevated-button:hover {
+      background-color: #14709B;
+    }
   }
   @media (prefers-color-scheme: light) {
     @include mat.theme((

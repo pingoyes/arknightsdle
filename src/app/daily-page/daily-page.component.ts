@@ -3,17 +3,18 @@ import { WordleComponent } from '../wordle/wordle.component';
 import { MatButtonModule } from '@angular/material/button';
 import { Character, CharacterService } from '../services/character.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { map, Observable, shareReplay } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-daily-page',
-  imports: [WordleComponent, MatButtonModule, TranslateModule],
+  imports: [WordleComponent, MatButtonModule, TranslateModule, AsyncPipe],
   templateUrl: './daily-page.component.html',
   styleUrl: './daily-page.component.scss'
 })
 export class DailyPageComponent {
-  pageTitle: string = 'Daily';
   character: Character = this.characterService.getEmptyCharacter();
-  characterData: Map<string, Character> = new Map<string, Character>();
+  characterData$!: Observable<Map<string, Character>>;
 
   finalCharacter: string = '';
 
@@ -25,18 +26,18 @@ export class DailyPageComponent {
   constructor(private characterService: CharacterService) {}
   
   ngOnInit() {
-    this.characterService.getCharacters().subscribe(data => {
-      this.characterData = data;
-      this.updateCharacter();
-    });
+    this.characterData$ = this.characterService.getCharacters().pipe(map(data => {
+      this.updateCharacter(data);
+      return data;
+    }), shareReplay(1));  
   }
 
-  updateCharacter() : void {
+  updateCharacter(data: Map<string, Character>) : void {
     this.finalCharacter = '';
     let randomChar = this.character;
 
     while (randomChar == this.character) {
-      randomChar = this.selectRandomDailyChar(Array.from(this.characterData.values()), this.characterData.size);
+      randomChar = this.selectRandomDailyChar(Array.from(data.values()), data.size);
     }
     this.character = randomChar ? randomChar : this.character;
   }

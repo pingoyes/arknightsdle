@@ -15,16 +15,18 @@
 }
 
 .nav-toolbar-link {
-    color: var(--mat-toolbar-container-text-color) !important; 
+    //color: var(--mat-toolbar-container-text-color) !important; 
     text-decoration: none;
     &:hover {
         background: var(--mat-sys-primary-container);
         cursor: pointer;
     }
     &.selected {
-        background: var(--mat-sys-primary-container);
+        //background: var(--mat-sys-primary-container);
+        background: var(--blue-button);
         pointer-events: none;
         cursor: default;
+        color: white;
      }
 }
 

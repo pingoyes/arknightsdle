@@ -1,14 +1,19 @@
 <div class="center-wrapper">
-    <h1>{{ 'endless.title' | translate }}</h1>
-    
+    <div class="page-header-container">
+        <h1 class="page-header">{{ 'endless.title' | translate }}</h1>
+    </div>
     @if (finalCharacter != '') {
-        <h2 [class.choice-correct]="character.name == finalCharacter"
-            [class.choice-incorrect]="character.name != finalCharacter">The character was <span class="character-choice">{{ character.name }}</span>
-        </h2>
-        <button mat-flat-button class="restart-button" (click)="updateCharacter()">{{ character.name == finalCharacter ? 'Continue' : 'Restart' }}</button>
+        <div class="character-choice-container">
+            <span [class.choice-correct]="character.name == finalCharacter"
+                [class.choice-incorrect]="character.name != finalCharacter">The character was <span class="character-choice">{{ character.name }}</span>
+            </span>
+        </div>
+        @if ((characterData$ | async); as data) {
+            <button mat-flat-button class="restart-button" (click)="updateCharacter(data)">{{ character.name == finalCharacter ? 'Continue' : 'Restart' }}</button>
+        }
     }
     <app-wordle
-        [data]="characterData"
+        [data]="characterData$ | async"
         [character]="character"
         (gameCompleted)="onGameCompleted($event)"></app-wordle>
     <div class="score-container">

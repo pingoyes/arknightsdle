@@ -32,10 +32,13 @@
             </button>
         }
         @if (hintUsed) {
-            <div class="hint-text-label">Hint:</div>
-            <span class="hint-text">"{{ character.itemUsage.replace(character.name, ' █')
-                .replace(character.name.toLowerCase(), ' █')
-                .replace(this.translate.instant('wordle.profession.' + character.profession), ' █') }}"</span>
+            <div class="hint-text-container">
+                <div class="hint-text-label">Hint:</div>
+                <span class="hint-text">"{{ character.itemUsage.replace(character.name, ' █')
+                    .replace(character.name.toLowerCase(), ' █')
+                    .replace(this.translate.instant('wordle.profession.' + character.profession), ' █') }}"
+                </span>
+            </div>
         }
         </div>
     }
