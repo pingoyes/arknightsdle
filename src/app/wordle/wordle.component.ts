@@ -46,7 +46,7 @@ export class WordleComponent {
     @ViewChild('choiceInput', { read: MatAutocompleteTrigger }) choiceAutocomplete!: MatAutocompleteTrigger;
     choiceFormControl = new FormControl('');
 
-    displayColumns: string[] = ['name', 'rarity', 'profession', 'subProfessionId', 'groupId'];
+    displayColumns: string[] = ['name', 'rarity', 'profession', 'subProfessionId', 'tagList', 'groupId'];
 
     constructor(public translate: TranslateService, private characterService: CharacterService) {}
 

@@ -48,7 +48,7 @@
             <td mat-cell *matCellDef="let element" [class.choices-table-cell-correct]="element.name == character.name"> {{element.name}} </td>
         </ng-container>
         <ng-container matColumnDef="rarity">
-            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Rarity </th>
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"> Rarity </th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="element.rarity != character.rarity"
                 [class.choices-table-cell-correct]="element.rarity == character.rarity"> {{ 'wordle.rarity.' + element.rarity | translate }} 
@@ -61,19 +61,31 @@
             </td>
         </ng-container>
         <ng-container matColumnDef="profession">
-            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Class </th>
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"> Class </th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="element.profession != character.profession"
                 [class.choices-table-cell-correct]="element.profession == character.profession"> {{ 'wordle.profession.' + element.profession | translate }} </td>
         </ng-container>
         <ng-container matColumnDef="subProfessionId">
-            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"> Subclass </th>
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"> Subclass </th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="element.subProfessionId != character.subProfessionId"
                 [class.choices-table-cell-correct]="element.subProfessionId == character.subProfessionId"> {{element.subProfessionId}} </td>
         </ng-container>
+        <ng-container matColumnDef="tagList">
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"> Tags </th>
+            <td mat-cell *matCellDef="let element" class="choices-table-cell-list">
+                @for (tag of element.tagList; track tag) {
+                    <div class="choices-table-cell-list-item"
+                        [class.choices-table-cell-incorrect]="!character.tagList.includes(tag)"
+                        [class.choices-table-cell-correct]="character.tagList.includes(tag)">
+                        {{ tag }}
+                    </div>
+                }
+            </td>
+        </ng-container>
         <ng-container matColumnDef="groupId">
-            <th mat-header-cell *matHeaderCellDef class="choices-table-cell"
+            <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"
                 matTooltip="{{ 'wordle.faction.help' | translate }}"
                 matTooltipClass="wordle-choices-table-faction-tooltip"
                 [matTooltipPosition]="'above'"> Faction <mat-icon matSuffix class="choices-table-cell-icon">info</mat-icon></th>

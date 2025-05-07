@@ -11,6 +11,7 @@ export interface Character {
     groupId: string;
     itemUsage: string;
     itemDesc: string;
+    tagList: string[];
 }
 @Injectable({
     providedIn: 'root'
@@ -32,7 +33,8 @@ export class CharacterService {
                         nationId: data[key].nationId,
                         groupId: (data[key].teamId && !data[key].groupId && !data[key].nationId) ? data[key].teamId : data[key].groupId,
                         itemUsage: data[key].itemUsage,
-                        itemDesc: data[key].itemDesc
+                        itemDesc: data[key].itemDesc,
+                        tagList: data[key].tagList
                     });
                 }
             });
@@ -41,6 +43,6 @@ export class CharacterService {
     }
 
     getEmptyCharacter() : Character {
-        return {name: '', rarity: '', profession: '', subProfessionId: '', nationId: '', groupId: '', itemUsage: '', itemDesc: ''};
+        return {name: '', rarity: '', profession: '', subProfessionId: '', nationId: '', groupId: '', itemUsage: '', itemDesc: '', tagList: []};
     }
 }
