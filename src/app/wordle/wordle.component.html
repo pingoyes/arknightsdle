@@ -70,7 +70,9 @@
             <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"> Subclass </th>
             <td mat-cell *matCellDef="let element"
                 [class.choices-table-cell-incorrect]="element.subProfessionId != character.subProfessionId"
-                [class.choices-table-cell-correct]="element.subProfessionId == character.subProfessionId"> {{element.subProfessionId}} </td>
+                [class.choices-table-cell-correct]="element.subProfessionId == character.subProfessionId">
+                {{'wordle.subProfession.' + element.profession + '.' + element.subProfessionId | translate }}
+            </td>
         </ng-container>
         <ng-container matColumnDef="tagList">
             <th mat-header-cell *matHeaderCellDef class="choices-table-cell-header"> Tags </th>

@@ -9,14 +9,97 @@
       "TIER_6": "6 ★"
     },
     "profession": {
-      "MEDIC": "Medic",
-      "WARRIOR": "Guard",
-      "SPECIAL": "Specialist",
-      "SNIPER": "Sniper",
-      "TANK": "Defender",
       "CASTER": "Caster",
+      "TANK": "Defender",
+      "WARRIOR": "Guard",
+      "MEDIC": "Medic",
+      "SNIPER": "Sniper",
+      "SPECIAL": "Specialist",
       "SUPPORT": "Supporter",
       "PIONEER": "Vanguard"
+    },
+    "subProfession": {
+      "CASTER": {
+        "corecaster": "Core",
+        "splashcaster": "Splash",
+        "blastcaster": "Blast",
+        "chain": "Chain",
+        "funnel": "Mech-Accord",
+        "phalanx": "Phalanx",
+        "mystic": "Mystic",
+        "primcaster": "Primal"
+      },
+      "TANK": {
+        "protector": "Protector",
+        "guardian": "Guardian",
+        "unyield": "Juggernaut",
+        "artsprotector": "Arts Protector",
+        "duelist": "Duelist",
+        "fortress": "Fortress",
+        "shotprotector": "Sentry Protector",
+        "primprotector": "Primal Protector"
+      },
+      "WARRIOR": {
+        "fearless": "Dreadnought",
+        "centurion": "Centurion",
+        "lord": "Lord",
+        "artsfghter": "Arts Fighter",
+        "instructor": "Instructor",
+        "fighter": "Fighter",
+        "sword": "Swordmaster",
+        "musha": "Soloblade",
+        "librator": "Liberator",
+        "reaper": "Reaper",
+        "crusher": "Crusher",
+        "hammer": "Earthshaker"
+      },
+      "MEDIC": {
+        "physician": "Medic",
+        "ringhealer": "Multi-target",
+        "healer": "Therapist",
+        "wandermedic": "Wandering",
+        "incantationmedic": "Incantation",
+        "chainhealer": "Chain"
+      },
+      "SNIPER": {
+        "fastshot": "Marksman",
+        "aoesniper": "Artilleryman",
+        "longrange": "Deadeye",
+        "closerange": "Heavyshooter",
+        "reaperrange": "Spreadshooter",
+        "siegesniper": "Besieger",
+        "bombarder": "Flinger",
+        "hunter": "Hunter",
+        "loopshooter": "Loopshooter"
+      },
+      "SPECIAL": {
+        "pusher": "Push Stroker",
+        "hookmaster": "Hookmaster",
+        "executor": "Executor",
+        "stalker": "Ambusher",
+        "geek": "Geek",
+        "merchant": "Merchant",
+        "traper": "Trapmaster",
+        "dollkeeper": "Dollkeeper",
+        "alchemist": "Alchemist",
+        "skywalker": "Skyranger"
+      },
+      "SUPPORT": {
+        "slower": "Decel Binder",
+        "summoner": "Summoner",
+        "underminer": "Hexer",
+        "bard": "Bard",
+        "blessing": "Abjurer",
+        "craftsman": "Artificer",
+        "ritualist": "Ritualist"
+      },
+      "PIONEER": {
+        "pioneer": "Pioneer",
+        "charger": "Charger",
+        "bearer": "Standard Bearer",
+        "tactician": "Tactician",
+        "agent": "Agent"
+      }
     },
     "faction": {
       "help": "Green: Faction ✓\n Yellow: Faction X | Nation ✓ \n Red: Faction X | Nation X ",
