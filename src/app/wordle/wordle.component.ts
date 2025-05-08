@@ -24,7 +24,7 @@ import { TitleCasePipe } from '@angular/common';
 export class WordleComponent {
     @Input() data: Map<string, Character> | null = new Map<string, Character>();
     @Input() character: Character = this.characterService.getEmptyCharacter();
-    @Input() maxAttempts: number = 7;
+    @Input() maxAttempts: number = 8;
     @Input() enableHints: boolean = true;
 
     @Output() gameCompleted = new EventEmitter<string>();
