@@ -9,6 +9,9 @@
                     [class.choice-incorrect]="character.name != finalCharacter">Today's character was <span class="character-choice">{{ character.name }}</span>
                 </span>
             </div>
+            <div class="daily-reset-timer">
+                Resets in: {{ timer$ | async | date:'HH:mm:ss':'+0'}}
+            </div>
         }
    
     <app-wordle [data]="characterData$ | async"

@@ -3,13 +3,13 @@ import { WordleComponent } from '../wordle/wordle.component';
 import { MatButtonModule } from '@angular/material/button';
 import { Character, CharacterService } from '../services/character.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { map, Observable, shareReplay } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { map, Observable, shareReplay, timer } from 'rxjs';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { sfc32, cyrb128 } from '../utils/seed-random-util';
 
 @Component({
     selector: 'app-daily-page',
-    imports: [WordleComponent, MatButtonModule, TranslateModule, AsyncPipe],
+    imports: [WordleComponent, MatButtonModule, TranslateModule, AsyncPipe, DatePipe],
     templateUrl: './daily-page.component.html',
     styleUrl: './daily-page.component.scss'
 })
@@ -24,13 +24,17 @@ export class DailyPageComponent {
     characterChoices: string[] = [];
     saveProgress: boolean = true;
 
+    timer$: Observable<number> = timer(0, 1000).pipe(
+        map(t => this.timeTillReset()),
+      );
+
     constructor(private characterService: CharacterService) {}
     
     ngOnInit() {
         this.characterData$ = this.characterService.getCharacters().pipe(map(data => {
             this.updateCharacter(data);
             return data;
-        }), shareReplay(1));    
+        }), shareReplay(1));
     }
 
     updateCharacter(data: Map<string, Character>) : void {
@@ -76,5 +80,13 @@ export class DailyPageComponent {
 
     onGameCompleted(value: string) {
         this.finalCharacter = value;
+    }
+
+    timeTillReset() : number {
+        const reset = new Date();
+        reset.setHours(24, 0, 0, 0);
+        const resetTime = reset.getTime()-Date.now();
+        
+        return resetTime;
     }
 }
